@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Toaster } from "react-hot-toast";
 import './App.css'
 // Import CSS files
@@ -28,24 +28,64 @@ import Appointment from './pages/Appointment';
 import Preloader from './components/Preloader';
 import Service from './pages/Service';
 
+function Layout({ children }) {
+    return (
+        <div className="page-wrapper">
+            <Preloader />
+            <Toaster />
+            <Header />
+            {children}
+            <Footer />
+        </div>
+    );
+}
+
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: (
+            <Layout>
+                <Home />
+            </Layout>
+        ),
+    },
+    {
+        path: "/about",
+        element: (
+            <Layout>
+                <About />
+            </Layout>
+        ),
+    },
+    {
+        path: "/service",
+        element: (
+            <Layout>
+                <Service />
+            </Layout>
+        ),
+    },
+    {
+        path: "/contact",
+        element: (
+            <Layout>
+                <Contact />
+            </Layout>
+        ),
+    },
+    {
+        path: "/appointment",
+        element: (
+            <Layout>
+                <Appointment />
+            </Layout>
+        ),
+    },
+]);
+
 function App() {
     return (
-        <Router>
-            <div className="page-wrapper">
-                <Preloader />
-                <Toaster></Toaster>
-                <Header />
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/service" element={<Service />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/appointment" element={<Appointment />} />
-                    {/* Add other routes */}
-                </Routes>
-                <Footer />
-            </div>
-        </Router>
+        <RouterProvider router={router} />
     );
 }
 
